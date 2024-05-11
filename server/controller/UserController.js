@@ -43,4 +43,15 @@ const login = async (req, res) => {
   }
 };
 
-module.exports = { register, login };
+// Get all users expect the logged in user
+
+const getUsers = async (req, res) => {
+  try {
+    const { id } = req.body;
+    const users = await User.find({ _id: { $ne: id } });
+    res.json(users);
+  } catch (err) {
+    res.status(500).json({ msg: err.message });
+  }
+};
+module.exports = { register, login, getUsers };

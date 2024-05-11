@@ -5,7 +5,9 @@ const socketIo = require("socket.io");
 const http = require("http");
 const app = express();
 const user = require("./routes/userRoutes");
+const cookieParser = require("cookie-parser");
 
+app.use(cookieParser());
 app.use(cors());
 app.use(bodyParser.json());
 

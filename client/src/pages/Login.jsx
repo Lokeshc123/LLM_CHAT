@@ -4,60 +4,61 @@ import { useNavigate } from 'react-router-dom';
 import { login } from '../api_requests/sendData';
 
 const Login = () => {
-    const navigation = useNavigate();
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+  const navigation = useNavigate();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
-    const handleLogin = async () => {
-        try {
-            const data = {
-                email,
-                password
-            };
-            const response = await login(data);
-            if (response.success) {
-                alert("Login successful");
+  const handleLogin = async () => {
+    try {
+      const data = {
+        email,
+        password
+      };
+      const response = await login(data);
+      if (response.success) {
+        alert("Login successful");
+        navigation("/home");
 
-            }
-            else {
-                alert(response.msg);
-            }
-        }
-        catch (error) {
-            alert("An error occurred");
-        }
+      }
+      else {
+        alert(response.msg);
+      }
     }
+    catch (error) {
+      alert("An error occurred");
+    }
+  }
 
-    return (
-        <Container>
-            <LoginContainer>
-                <h2 style={{ alignSelf: "center" }}>Sign in to your account</h2> {/* Updated title */}
-                <Form>
-                    <Input
-                        type="email"
-                        placeholder="Email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                        autoComplete="off"
-                    />
-                    <Input
-                        type="password"
-                        placeholder="Password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                        autoComplete="off"
-                    />
-                    <ForgotPasswordLink to="/forgot-password">
-                        Forgot Password?
-                    </ForgotPasswordLink>
-                </Form>
-                <Button onClick={handleLogin}>Login</Button>
-                <span style={{ alignSelf: 'flex-end' }} onClick={() => navigation("/register")}>Don't have an account? Register</span>
-            </LoginContainer>
-        </Container>
-    );
+  return (
+    <Container>
+      <LoginContainer>
+        <h2 style={{ alignSelf: "center" }}>Sign in to your account</h2> {/* Updated title */}
+        <Form>
+          <Input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            autoComplete="off"
+          />
+          <Input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            autoComplete="off"
+          />
+          <ForgotPasswordLink to="/forgot-password">
+            Forgot Password?
+          </ForgotPasswordLink>
+        </Form>
+        <Button onClick={handleLogin}>Login</Button>
+        <span style={{ alignSelf: 'flex-end' }} onClick={() => navigation("/register")}>Don't have an account? Register</span>
+      </LoginContainer>
+    </Container>
+  );
 };
 
 export default Login;
