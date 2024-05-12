@@ -12,6 +12,7 @@ const {
   rejectFriendRequest,
   removeFriend,
   getFriends,
+  updateStatus,
 } = require("../controller/UserController");
 
 router.route("/register").post(register);
@@ -24,5 +25,6 @@ router.route("/acceptFriendRequest").post(acceptFriendRequest);
 router.route("/rejectFriendRequest").post(rejectFriendRequest);
 router.route("/getFriends/:id").get(getFriends);
 router.route("/removeFriend").post(removeFriend);
+router.route("/updateStatus").post(updateStatus);
 
 module.exports = router;

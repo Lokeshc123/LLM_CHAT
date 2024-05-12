@@ -168,6 +168,17 @@ const removeFriend = async (req, res) => {
   }
 };
 
+// Update status
+
+const updateStatus = async (req, res) => {
+  try {
+    const { id, status } = req.body;
+    const user = await User.findByIdAndUpdate(id, { status });
+    res.json(user);
+  } catch (err) {
+    res.status(500).json({ msg: err.message });
+  }
+};
 module.exports = {
   register,
   login,
@@ -179,4 +190,5 @@ module.exports = {
   rejectFriendRequest,
   getFriends,
   removeFriend,
+  updateStatus,
 };

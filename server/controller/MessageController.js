@@ -1,11 +1,36 @@
 const Message = require("../model/Message");
 const User = require("../model/User");
 const Conversation = require("../model/Conversation");
-const { getReceiverSocketId, io } = require("../app");
+const { getrecid, io } = require("../app");
+const { json } = require("body-parser");
+
+const { GoogleGenerativeAI } = require("@google/generative-ai");
+const genAI = new GoogleGenerativeAI("AIzaSyDThfRE2TdnYLG4VfDkpy6Rf7SX3w-UMjo");
+const aimessage = async (req, res) => {
+  try {
+    const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+
+    const prompt =
+      "Write a professional sentence that the user u are trying to send message is unavaliable";
+
+    const result = await model.generateContent(prompt);
+    const response = await result.response;
+    const text = response.text();
+    console.log(text);
+    res.status(200).json({ message: text });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
 
 const sendMessage = async (req, res) => {
   try {
     const { senderId, receiverId, message } = req.body;
+
+    // Log debug information
+    console.log("Received message send request.");
+    console.log("Sender ID:", senderId);
+    console.log("Receiver ID:", receiverId);
 
     // Find conversation or create a new one
     let conversation = await Conversation.findOne({
@@ -30,14 +55,19 @@ const sendMessage = async (req, res) => {
     conversation.messages.push(newMessage._id);
 
     // Save conversation and message
-
     await Promise.all([conversation.save(), newMessage.save()]);
-    // Optimized with Promise.all
-    console.log("Message sent successfully");
-    console.log("Receiver ID", receiverId);
-    const receiverSocketId = getReceiverSocketId(receiverId);
+
+    // Log debug information
+    console.log("Message saved successfully.");
+
+    // Attempt to retrieve receiverSocketId
+    const receiverSocketId = getrecid(receiverId);
+    console.log("Receiver Socket ID:", receiverSocketId);
+
+    // Emit new message if receiverSocketId exists
     if (receiverSocketId) {
       io.to(receiverSocketId).emit("newMessage", newMessage);
+      console.log("New message emitted to receiver.");
     }
 
     // Update sender and receiver with message IDs
@@ -48,8 +78,11 @@ const sendMessage = async (req, res) => {
     await sender.save();
     await receiver.save();
 
-    res.status(200).json({ message: "Message sent successfully" });
+    res
+      .status(200)
+      .json({ message: "Message sent successfully", json: newMessage });
   } catch (error) {
+    console.error("Error sending message:", error);
     res.status(500).json({ message: error.message });
   }
 };
@@ -71,4 +104,4 @@ const getConversation = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
-module.exports = { sendMessage, getConversation };
+module.exports = { sendMessage, getConversation, aimessage };

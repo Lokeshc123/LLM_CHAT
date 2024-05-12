@@ -51,8 +51,8 @@ const userSchema = new mongoose.Schema({
   status: {
     type: String,
     required: true,
-    enum: ["online", "offline", "busy"],
-    default: "offline",
+    enum: ["Avaliable", "Busy", "offline"],
+    default: "avaliable",
   },
   recievedrequests: [
     {

@@ -81,6 +81,7 @@ const Friends = () => {
                         value={searchText}
                     />
                 </ListHeader>
+                {frn.length === 0 ? <h1>No Friends</h1> : null}
                 {filteredPeople.map((req) => (
                     <Frn key={req._id} people={req} />
                 ))}

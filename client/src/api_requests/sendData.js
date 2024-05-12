@@ -71,3 +71,15 @@ export const sendMsg = async (data) => {
     return error.response.data || { success: false, msg: "An error occurred" };
   }
 };
+
+export const updateStatus = async (data) => {
+  try {
+    const response = await axios.post(
+      "http://localhost:5000/api/v1/updateStatus",
+      data
+    );
+    return response.data;
+  } catch (error) {
+    return error.response.data || { success: false, msg: "An error occurred" };
+  }
+};

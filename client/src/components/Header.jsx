@@ -57,11 +57,11 @@ const Header = () => {
                 </Icons>
             </IconsContainer>
             <BottomContainer>
-                <Icons>
+                <Icons onClick={() => selectedOption("Profile")}>
                     <FaUser size={25} />
                     <span >Profile</span>
                 </Icons>
-                <Icons>
+                <Icons onClick={() => selectedOption("Logout")}>
                     <CiLogout size={25} />
                     <span >Logout</span>
                 </Icons>

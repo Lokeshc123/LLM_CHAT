@@ -98,6 +98,7 @@ const Notifications = () => {
                         value={searchText}
                     />
                 </ListHeader>
+                {requests.length === 0 ? <h2>No friend requests</h2> : null}
                 {filteredPeople.map((req) => (
                     <Request key={req._id} people={req} />
                 ))}

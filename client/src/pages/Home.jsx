@@ -6,7 +6,12 @@ import Chats from '../components/Chats'
 import Search from '../components/Search'
 import Friends from '../components/Friends'
 import Notifications from '../components/Notifications'
+import Profile from '../components/Profile'
+import Cookies from 'universal-cookie'
+import { useNavigate } from 'react-router-dom'
 const Home = () => {
+    const cookies = new Cookies();
+    const navigate = useNavigate();
     const { option } = useContext(ChatContext)
     const renderComponent = () => {
         switch (option) {
@@ -18,8 +23,16 @@ const Home = () => {
                 return <Friends />
             case "Notifications":
                 return <Notifications />
+            case "Profile":
+                return <Profile />
+            case "Logout":
+                cookies.remove('token_auth');
+                localStorage.removeItem('user');
+                navigate("/");
+
+                break;
             default:
-                return <Chats />
+                return <Chats />;
         }
     }
 

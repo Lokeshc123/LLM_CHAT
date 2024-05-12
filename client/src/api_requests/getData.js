@@ -65,3 +65,12 @@ export const getConvo = async (senderId, receiverId) => {
     return error.response.data || { success: false, msg: "An error occurred" };
   }
 };
+
+export const aimsg = async () => {
+  try {
+    const response = await axios.get("http://localhost:5000/api/v1/ai-msg");
+    return response.data;
+  } catch (error) {
+    return error.response.data || { success: false, msg: "An error occurred" };
+  }
+};
