@@ -1,9 +1,12 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { login } from '../api_requests/sendData';
-
+import Cookie from 'universal-cookie'
+import { ChatContext } from '../context/contextProvider';
 const Login = () => {
+  const cookies = new Cookie();
+  const { user, setUser } = useContext(ChatContext);
   const navigation = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -15,9 +18,15 @@ const Login = () => {
         password
       };
       const response = await login(data);
+      console.log(response);
       if (response.success) {
-        alert("Login successful");
+
+
+        cookies.set('token_auth', response.token, { expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) });
+        console.log(response.user);
+        setUser(response.user);
         navigation("/home");
+
 
       }
       else {
@@ -28,7 +37,7 @@ const Login = () => {
       alert("An error occurred");
     }
   }
-
+  console.log("User", user);
   return (
     <Container>
       <LoginContainer>

@@ -47,7 +47,9 @@ const login = async (req, res) => {
 
 const getUsers = async (req, res) => {
   try {
-    const { id } = req.body;
+    console.log(req.body);
+    const { id } = req.query;
+    console.log(id);
     const users = await User.find({ _id: { $ne: id } });
     res.json(users);
   } catch (err) {
