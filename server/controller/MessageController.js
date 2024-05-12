@@ -17,7 +17,29 @@ const aimessage = async (req, res) => {
     const response = await result.response;
     const text = response.text();
     console.log(text);
-    res.status(200).json({ message: text });
+
+    // Set a timeout of 10 seconds
+    const timeout = new Promise((resolve) => {
+      setTimeout(() => {
+        resolve("Response timeout");
+      }, 10000);
+    });
+
+    // Wait for either the response or the timeout
+    const resultOrTimeout = await Promise.race([response, timeout]);
+
+    // Check if the response was received within the timeout
+    if (resultOrTimeout === "Response timeout") {
+      // Handle the timeout case here
+      console.log("Response timeout");
+      res
+        .status(200)
+        .json({ message: "Response timeout for ai , User not reacable" });
+    } else {
+      // Handle the response case here
+      console.log(text);
+      res.status(200).json({ message: text });
+    }
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
