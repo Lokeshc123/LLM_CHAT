@@ -5,7 +5,7 @@ const { getrecid, io } = require("../app");
 const { json } = require("body-parser");
 
 const { GoogleGenerativeAI } = require("@google/generative-ai");
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+const genAI = new GoogleGenerativeAI("AIzaSyDThfRE2TdnYLG4VfDkpy6Rf7SX3w-UMjo");
 const aimessage = async (req, res) => {
   try {
     const model = genAI.getGenerativeModel({ model: "gemini-pro" });
