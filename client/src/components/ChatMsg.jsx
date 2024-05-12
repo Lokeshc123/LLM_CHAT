@@ -2,10 +2,10 @@ import React, { useContext } from 'react'
 import styled from 'styled-components'
 import { ChatContext } from '../context/contextProvider';
 
-const People = ({ people }) => {
-    const { searchDeatils, setSearchDetails } = useContext(ChatContext);
+const ChatMsg = ({ people }) => {
+    const { setChatDetails } = useContext(ChatContext);
     return (
-        <Container onClick={() => setSearchDetails(people._id)}>
+        <Container onClick={() => setChatDetails(people._id)}>
             <Image src={people.avatar} alt="Img" />
             <Content>
                 <Name>{people.name}</Name>
@@ -15,7 +15,7 @@ const People = ({ people }) => {
     )
 }
 
-export default People
+export default ChatMsg
 
 const Container = styled.div`
     display: flex;

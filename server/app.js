@@ -5,6 +5,7 @@ const socketIo = require("socket.io");
 const http = require("http");
 const app = express();
 const user = require("./routes/userRoutes");
+const message = require("./routes/messageRoutes");
 const cookieParser = require("cookie-parser");
 
 app.use(cookieParser());
@@ -20,4 +21,5 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use("/api/v1", user);
+app.use("/api/v1", message);
 module.exports = app;

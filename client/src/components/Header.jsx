@@ -1,16 +1,38 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import styled from 'styled-components';
 
 import Image1 from "../assets/Images/1.png"
 import { FiMessageSquare } from "react-icons/fi";
 import { FaUserFriends, FaSearch, FaUser } from "react-icons/fa";
 import { IoIosNotifications } from "react-icons/io";
+import { jwtDecode } from 'jwt-decode';
 import { CiLogout } from "react-icons/ci";
 import { ChatContext } from '../context/contextProvider';
+import Cookies from 'universal-cookie';
+import { getUserDetails } from '../api_requests/getData';
 
 const Header = () => {
-    const { option, selectedOption } = useContext(ChatContext);
-    console.log(option);
+    const { option, selectedOption, setUser } = useContext(ChatContext);
+
+    const cookies = new Cookies();
+    // useEffect(() => {
+    //     const fetchDetails = async () => {
+    //         try {
+    //             const token = cookies.get('token_auth');
+    //             console.log('Token:', token);
+    //             if (token) {
+    //                 const decoded = jwtDecode(token);
+    //                 const response = await getUserDetails(decoded.id);
+    //                 console.log('User details:', response.user);
+
+    //                 setUser(response.user);
+    //             }
+    //         } catch (error) {
+    //             console.error('Token not found:', error);
+    //         }
+    //     };
+    //     fetchDetails();
+    // }, []);
     return (
         <Container>
             <Logo>
