@@ -1,6 +1,7 @@
 const Message = require("../model/Message");
 const User = require("../model/User");
 const Conversation = require("../model/Conversation");
+const { getReceiverSocketId, io } = require("../app");
 
 const sendMessage = async (req, res) => {
   try {
@@ -30,7 +31,14 @@ const sendMessage = async (req, res) => {
 
     // Save conversation and message
 
-    await Promise.all([conversation.save(), newMessage.save()]); // Optimized with Promise.all
+    await Promise.all([conversation.save(), newMessage.save()]);
+    // Optimized with Promise.all
+    console.log("Message sent successfully");
+    console.log("Receiver ID", receiverId);
+    const receiverSocketId = getReceiverSocketId(receiverId);
+    if (receiverSocketId) {
+      io.to(receiverSocketId).emit("newMessage", newMessage);
+    }
 
     // Update sender and receiver with message IDs
     const sender = await User.findById(senderId);

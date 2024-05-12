@@ -24,6 +24,7 @@ const Login = () => {
 
         cookies.set('token_auth', response.token, { expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) });
         console.log(response.user);
+        localStorage.setItem("user", JSON.stringify(response.user));
         setUser(response.user);
         navigation("/home");
 

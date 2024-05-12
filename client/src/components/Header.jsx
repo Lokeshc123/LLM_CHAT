@@ -15,24 +15,24 @@ const Header = () => {
     const { option, selectedOption, setUser } = useContext(ChatContext);
 
     const cookies = new Cookies();
-    // useEffect(() => {
-    //     const fetchDetails = async () => {
-    //         try {
-    //             const token = cookies.get('token_auth');
-    //             console.log('Token:', token);
-    //             if (token) {
-    //                 const decoded = jwtDecode(token);
-    //                 const response = await getUserDetails(decoded.id);
-    //                 console.log('User details:', response.user);
+    useEffect(() => {
+        const fetchDetails = async () => {
+            try {
+                const token = cookies.get('token_auth');
+                console.log('Token:', token);
+                if (token) {
+                    const decoded = jwtDecode(token);
+                    const response = await getUserDetails(decoded.id);
 
-    //                 setUser(response.user);
-    //             }
-    //         } catch (error) {
-    //             console.error('Token not found:', error);
-    //         }
-    //     };
-    //     fetchDetails();
-    // }, []);
+
+                    setUser(response);
+                }
+            } catch (error) {
+                console.error('Token not found:', error);
+            }
+        };
+        fetchDetails();
+    }, []);
     return (
         <Container>
             <Logo>

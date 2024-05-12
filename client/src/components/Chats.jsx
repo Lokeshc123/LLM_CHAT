@@ -7,6 +7,7 @@ import { ChatContext } from '../context/contextProvider';
 import ChatMsg from './ChatMsg';
 import { sendMsg } from '../api_requests/sendData';
 import ChatConvo from './ChatConvo';
+import { SocketContext } from '../context/SocketContext';
 
 
 const Chats = () => {
@@ -20,9 +21,29 @@ const Chats = () => {
     const filteredPeople = chats.filter((ch) =>
         ch.name.toLowerCase().includes(searchText)
     );
+    const { onlineUsers, socket } = useContext(SocketContext);
+    useEffect(() => {
+        socket?.on("newMessage", (newMessage) => {
+            setConvo(prevConvo => [...prevConvo, newMessage]);
+
+        });
+
+        return () => socket?.off("newMessage");
+    }, [socket]);
+
+    console.log("Online Users", onlineUsers);
     const { user, chatDetails } = useContext(ChatContext);
     const [details, setDetails] = useState(null);
     const [convo, setConvo] = useState([]);
+    useEffect(() => {
+        socket?.on("newMessage", (newMessage) => {
+
+
+            setConvo([...convo, newMessage]);
+        });
+
+        return () => socket?.off("newMessage");
+    }, [socket, convo, setConvo]);
     useEffect(() => {
         if (chatDetails) {
             const fetchConversation = async () => {
@@ -120,6 +141,8 @@ const Chats = () => {
                             <Image src={details?.avatar} alt="Img" />
                             <Content>
                                 <Name>{details?.name}</Name>
+                                {onlineUsers.includes(chatDetails) ? <span style={{ color: "green" }}>Online</span> : <span style={{ color: "red" }}>Offline</span>
+                                }
                             </Content>
                         </ChatHeader>
                         <ChatConversation >
