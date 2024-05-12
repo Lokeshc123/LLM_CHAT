@@ -93,7 +93,7 @@ const getConversation = async (req, res) => {
 
     // Find conversation
     const conversation = await Conversation.findOne({
-      members: { $all: [senderId, receiverId] }, // Use $all operator
+      members: { $all: [senderId, receiverId] },
     }).populate("messages");
     if (!conversation) {
       return res.status(200).json([]);
